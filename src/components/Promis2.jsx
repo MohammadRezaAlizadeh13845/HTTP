@@ -176,7 +176,7 @@ const Promis2 = () => {
           >
             <button
               onClick={() => fetchDownloadButton()}
-              className="bg-blue-600 h-[70px] w-[150px] rounded-[15px] hover:bg-blue-800 transition-clicked duration-200 text-white active:bg-red-900 text-[20px] ltr"
+              className="bg-blue-600 h-[70px] w-[200px] rounded-[15px] hover:bg-blue-800 transition-clicked duration-200 text-white active:bg-red-900 text-[20px] "
             >
               {".".repeat(fetchDotCount) + fetchButtonText}
             </button>
@@ -238,7 +238,7 @@ const Promis2 = () => {
           >
             <button
               onClick={() => axiosDownloadButton()}
-              className="bg-blue-600 h-[70px] w-[150px] rounded-[15px] hover:bg-blue-800 transition-clicked duration-200 text-white active:bg-red-900 text-[20px] ltr"
+              className="bg-blue-600 h-[70px] w-[200px] rounded-[15px] hover:bg-blue-800 transition-clicked duration-200 text-white active:bg-red-900 text-[20px] "
             >
               {".".repeat(axiosDotCount) + axiosButtonText}
             </button>

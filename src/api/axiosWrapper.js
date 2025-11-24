@@ -19,6 +19,8 @@ const axiosWrapper = async (url, options = {}, onProgress) => {
       },
     });
 
+    new URL(url);
+
     const disposition = response.headers["content-disposition"];
     let filename = "downloaded-file";
 
@@ -39,6 +41,11 @@ const axiosWrapper = async (url, options = {}, onProgress) => {
       filename: filename,
     };
   } catch (err) {
+    if (err instanceof TypeError) {
+      const error = new Error("Invalid url");
+      error.code = "inavlid-url";
+      throw error;
+    }
     if (!err.response) {
       const error = new Error("No internet");
       error.code = "network";

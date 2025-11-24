@@ -15,7 +15,6 @@ const Promis = () => {
 
   const DownloadButton = () => {
     const url = linkInputRef.current.value;
-    if (!url) return;
 
     try {
       new URL(url);
@@ -24,6 +23,8 @@ const Promis = () => {
       setButtonText("Download");
       return;
     }
+
+    if (!url) return;
 
     setProgress(0);
     setShowProgress(true);
@@ -44,19 +45,26 @@ const Promis = () => {
       if (event.lengthComputable) {
         const percent = Math.round((event.loaded / event.total) * 100);
         setProgress(percent);
+      } else {
+        setProgress((prev) => Math.min(prev + 2, 95));
       }
     };
 
     xhr.onload = () => {
       clearInterval(interval);
+      setProgress(100);
+
       if (xhr.status === 200) {
-        const blob = xhr.response;
+        const contentType =
+          xhr.getResponseHeader("Content-Type") || "image/jpeg";
+        const blob = new Blob([xhr.response], { type: contentType });
         const imgURL = URL.createObjectURL(blob);
         setImageSrc(imgURL);
         setButtonText("!Donwloaded");
         setTimeout(() => {
           setButtonText("Download");
         }, 2000);
+        setShowProgress(false);
       } else {
         setShowError(true);
         setButtonText("Download");
@@ -90,7 +98,9 @@ const Promis = () => {
             <img
               alt="Downloaded"
               src={imageSrc}
-              className="max-w-full max-h-full w-auto h-auto opacity-0 animate-fadeIn"
+              className="max-w-full max-h-full w-auto h-auto"
+              style={{ opacity: 1, transition: "opacity 0.5s ease-in" }}
+              onLoad={(e) => (e.currentTarget.style.opacity = 1)}
             />
           )}
         </div>
@@ -123,7 +133,7 @@ const Promis = () => {
             <div
               className="bg-blue-400 h-[20px] rounded-full transition-all ease-in-out duration-500"
               style={{
-                width: `${progress}%`,
+                width: `${Math.min(progress + 10, 100)}%`,
                 transition: "width 0.5s ease-in-out",
               }}
             ></div>
